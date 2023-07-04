@@ -12,7 +12,7 @@ const Home = () => {
   );
   if (!isLoaded) return <div>Loading...</div>;
   return (
-    <GoogleMap zoom={10} center={center} mapContainerClassName="map-container">
+    <GoogleMap zoom={10} center={center} mapContainerStyle={{width:"100%",height:"100vh"}}>
       <Marker position={{ lat:  41.0423904497029, lng: 29.004673812622478 }} />
     </GoogleMap>
   );

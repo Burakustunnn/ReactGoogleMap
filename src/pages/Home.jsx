@@ -22,7 +22,7 @@ import { useRef, useState } from "react";
 const center = { lat: 41.0423904497029, lng: 29.004673812622478 };
 const Home = () => {
   const { isLoaded } = useJsApiLoader({
-    googleMapsApiKey: process.env.REACT_APP_GOOGLE_MAPS_API_KEY,
+    googleMapsApiKey: "AIzaSyAk0bwKsvaXf7iyr3ZkdVG0OxcAH3Ml2JY",
     libraries: ["places"],
   });
   const [map, setmap] = useState(null);
@@ -39,11 +39,10 @@ const Home = () => {
     if (originRef.current.value === "" || destiantionRef.current.value === "") {
       return;
     }
-    const directionsService = new google.maps.DirectionsService()
+    const directionsService = new google.maps.DirectionsService();
     const results = await directionsService.route({
       origin: originRef.current.value,
       destination: destiantionRef.current.value,
-      // eslint-disable-next-line no-undef
       travelMode: google.maps.TravelMode.DRIVING,
     });
     setDirectionsResponse(results);
@@ -75,7 +74,9 @@ const Home = () => {
           onLoad={(map) => setmap(map)}
         >
           <Marker position={center} />
-          {directionsResponse &&<DirectionsRenderer directions={directionsResponse}/>}
+          {directionsResponse && (
+            <DirectionsRenderer directions={directionsResponse} />
+          )}
         </GoogleMap>
       </Box>
 
@@ -108,8 +109,8 @@ const Home = () => {
           </ButtonGroup>
         </HStack>
         <HStack spacing={4} mt={4} justifyContent="space-between">
-          <Text>Distance: </Text>
-          <Text>Duration: </Text>
+          <Text>Distance: {distance}</Text>
+          <Text>Duration: {duration} </Text>
           <IconButton
             aria-label="center back"
             icon={<FaLocationArrow />}

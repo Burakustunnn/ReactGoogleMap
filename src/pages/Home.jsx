@@ -39,7 +39,7 @@ const Home = () => {
     if (originRef.current.value === "" || destiantionRef.current.value === "") {
       return;
     }
-    const directionsService = new google.maps.DirectionsService();
+    const directionsService = new google.maps.DirectionsService()
     const results = await directionsService.route({
       origin: originRef.current.value,
       destination: destiantionRef.current.value,
@@ -50,6 +50,14 @@ const Home = () => {
     setDistance(results.routes[0].legs[0].distance.text);
     setDuration(results.routes[0].legs[0].duration.text);
   };
+
+  function clearRoute() {
+    setDirectionsResponse(null);
+    setDistance("");
+    setDuration("");
+    originRef.current.value = "";
+    destiantionRef.current.value = "";
+  }
   return (
     <Flex
       position="relative"
@@ -67,6 +75,7 @@ const Home = () => {
           onLoad={(map) => setmap(map)}
         >
           <Marker position={center} />
+          {directionsResponse &&<DirectionsRenderer directions={directionsResponse}/>}
         </GoogleMap>
       </Box>
 
@@ -88,13 +97,13 @@ const Home = () => {
           </Autocomplete>
 
           <ButtonGroup>
-            <Button colorScheme="pink" type="submit">
+            <Button colorScheme="pink" type="submit" onClick={calculateRoute}>
               Calculate Route
             </Button>
             <IconButton
               aria-label="center back"
               icon={<FaTimes />}
-              onClick={() => alert(123)}
+              onClick={clearRoute}
             />
           </ButtonGroup>
         </HStack>
@@ -105,7 +114,10 @@ const Home = () => {
             aria-label="center back"
             icon={<FaLocationArrow />}
             isRound
-            onClick={() => map.panTo(center)}
+            onClick={() => {
+              map.panTo(center);
+              map.setZoom(15);
+            }}
           />
         </HStack>
       </Box>

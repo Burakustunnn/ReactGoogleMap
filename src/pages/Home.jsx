@@ -39,11 +39,11 @@ const Home = () => {
     if (originRef.current.value === "" || destiantionRef.current.value === "") {
       return;
     }
-    const directionsService = new google.maps.DirectionsService();
+    const directionsService = new window.google.maps.DirectionsService();
     const results = await directionsService.route({
       origin: originRef.current.value,
       destination: destiantionRef.current.value,
-      travelMode: google.maps.TravelMode.DRIVING,
+      travelMode: window.google.maps.TravelMode.DRIVING,
     });
     setDirectionsResponse(results);
     setDistance(results.routes[0].legs[0].distance.text);
@@ -66,7 +66,6 @@ const Home = () => {
       w="100vw"
     >
       <Box position="absolute" left={0} top={0} h="100%" w="100%">
-        {/* ***Google map box*** */}
         <GoogleMap
           center={center}
           zoom={15}
@@ -87,15 +86,23 @@ const Home = () => {
         bgColor="white"
         shadow="base"
         minW="container.md"
-        zIndex="modal"
+        zIndex="20"
       >
-        <HStack spacing={4}>
-          <Autocomplete>
-            <Input type="text" placeholder="Origin" ref={originRef} />
-          </Autocomplete>
-          <Autocomplete>
-            <Input type="text" placeholder="Destination" ref={destiantionRef} />
-          </Autocomplete>
+        <HStack spacing={4} zIndex="modal">
+          <Box flexGrow={1}>
+            <Autocomplete>
+              <Input type="text" placeholder="Origin" ref={originRef} />
+            </Autocomplete>
+          </Box>
+          <Box flexGrow={1}>
+            <Autocomplete>
+              <Input
+                type="text"
+                placeholder="Destination"
+                ref={destiantionRef}
+              />
+            </Autocomplete>
+          </Box>
 
           <ButtonGroup>
             <Button colorScheme="pink" type="submit" onClick={calculateRoute}>
